@@ -1,11 +1,24 @@
-package com.dotstar.bart.phoneappv5;
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+package com.spotify.sdk.demo;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,11 +28,12 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.View.OnClickListener;
 
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
@@ -33,18 +47,12 @@ import com.spotify.sdk.android.player.PlayerNotificationCallback;
 import com.spotify.sdk.android.player.PlayerState;
 import com.spotify.sdk.android.player.PlayerStateCallback;
 import com.spotify.sdk.android.player.Spotify;
-import com.spotify.sdk.android.player.Player.Builder;
-import com.spotify.sdk.android.player.Player.InitializationObserver;
 
-import java.util.ArrayList;
-import java.util.concurrent.RejectedExecutionException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.lang.String;
 
-
-public class MusicActivity extends Activity implements
+public class DemoActivity extends ActionBarActivity implements
         PlayerNotificationCallback, ConnectionStateCallback {
     //   ____                _              _
     //  / ___|___  _ __  ___| |_ __ _ _ __ | |_ ___
@@ -53,8 +61,10 @@ public class MusicActivity extends Activity implements
     //  \____\___/|_| |_|___/\__\__,_|_| |_|\__|___/
     //
 
-    private static final String CLIENT_ID = "44fdb2ec906a4276a45e7cd77a05a58e";
-    private static final String REDIRECT_URI = "my-first-awesome-annoying-app://callback";
+    @SuppressWarnings("SpellCheckingInspection")
+    private static final String CLIENT_ID = "8a91678afa49446c9aff1beaabe9c807";
+    @SuppressWarnings("SpellCheckingInspection")
+    private static final String REDIRECT_URI = "testschema://callback";
 
     @SuppressWarnings("SpellCheckingInspection")
     private static final String TEST_SONG_URI = "spotify:track:6KywfgRqvgvfJc3JRwaZdZ";
@@ -66,8 +76,6 @@ public class MusicActivity extends Activity implements
     private static final String TEST_PLAYLIST_URI = "spotify:user:sqook:playlist:0BZvnsfuqmnLyj6WVRuSte";
     @SuppressWarnings("SpellCheckingInspection")
     private static final String TEST_QUEUE_SONG_URI = "spotify:track:5EEOjaJyWvfMglmEwf9bG3";
-
-    Button homepage;
 
     /**
      * Request code that will be passed together with authentication result to the onAuthenticationResult
@@ -113,9 +121,9 @@ public class MusicActivity extends Activity implements
             R.id.play_playlist_button,
             R.id.pause_button,
             R.id.seek_button,
-//            R.id.low_bitrate_button,
-//            R.id.normal_bitrate_button,
-//            R.id.high_bitrate_button
+            R.id.low_bitrate_button,
+            R.id.normal_bitrate_button,
+            R.id.high_bitrate_button
     };
 
     /**
@@ -124,9 +132,9 @@ public class MusicActivity extends Activity implements
     private static final int[] REQUIRES_PLAYING_STATE = {
             R.id.skip_next_button,
             R.id.skip_prev_button,
-//            R.id.queue_song_button,
+            R.id.queue_song_button,
             R.id.toggle_shuffle_button,
-            R.id.toggle_repeat_button,
+            R.id.toggle_repeat_button
     };
 
     //  _____ _      _     _
@@ -179,7 +187,7 @@ public class MusicActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_musicplayer);
+        setContentView(R.layout.activity_demo);
 
         // Get a reference to any UI widgets that we'll need to use later
         mStatusText = (TextView) findViewById(R.id.status_text);
@@ -187,18 +195,7 @@ public class MusicActivity extends Activity implements
 
         updateButtons();
         logStatus("Ready");
-
-        //homepage = (Button)findViewById(R.id.homepageButton);
-       // homepage.setOnClickListener(listen1);
     }
-/**
-    OnClickListener listen1 = new OnClickListener() {
-        public void onClick(View v){
-            Intent intent = new Intent(MusicActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }; **/
 
     @Override
     protected void onResume() {
@@ -221,8 +218,8 @@ public class MusicActivity extends Activity implements
         registerReceiver(mNetworkStateReceiver, filter);
 
         if (mPlayer != null) {
-            mPlayer.addPlayerNotificationCallback(MusicActivity.this);
-            mPlayer.addConnectionStateCallback(MusicActivity.this);
+            mPlayer.addPlayerNotificationCallback(DemoActivity.this);
+            mPlayer.addConnectionStateCallback(DemoActivity.this);
         }
     }
 
@@ -300,9 +297,9 @@ public class MusicActivity extends Activity implements
                 @Override
                 public void onInitialized(Player player) {
                     logStatus("-- Player initialized --");
-                    mPlayer.setConnectivityStatus(getNetworkConnectivity(MusicActivity.this));
-                    mPlayer.addPlayerNotificationCallback(MusicActivity.this);
-                    mPlayer.addConnectionStateCallback(MusicActivity.this);
+                    mPlayer.setConnectivityStatus(getNetworkConnectivity(DemoActivity.this));
+                    mPlayer.addPlayerNotificationCallback(DemoActivity.this);
+                    mPlayer.addConnectionStateCallback(DemoActivity.this);
                     // Trigger UI refresh
                     updateButtons();
                 }
@@ -329,8 +326,7 @@ public class MusicActivity extends Activity implements
 
         // Login button should be the inverse of the logged in state
         Button loginButton = (Button) findViewById(R.id.login_button);
-        if (loggedIn) loginButton.setText(getString(R.string.logout_button_label));
-        else loginButton.setText(getString(R.string.login_button_label));
+        loginButton.setText(loggedIn ? R.string.logout_button_label : R.string.login_button_label);
 
         // Set enabled for all widgets which depend on initialized state
         for (int id : REQUIRES_INITIALIZED_STATE) {
@@ -417,11 +413,11 @@ public class MusicActivity extends Activity implements
         mPlayer.skipToNext();
     }
 
-//    public void onQueueSongButtonClicked(View view) {
-//        mPlayer.queue(TEST_QUEUE_SONG_URI);
-//        Toast toast = Toast.makeText(this, R.string.song_queued_toast, Toast.LENGTH_SHORT);
-//        toast.show();
-//    }
+    public void onQueueSongButtonClicked(View view) {
+        mPlayer.queue(TEST_QUEUE_SONG_URI);
+        Toast toast = Toast.makeText(this, R.string.song_queued_toast, Toast.LENGTH_SHORT);
+        toast.show();
+    }
 
     public void onToggleShuffleButtonClicked(View view) {
         mPlayer.setShuffle(!mCurrentPlayerState.shuffling);
@@ -435,18 +431,18 @@ public class MusicActivity extends Activity implements
         // Skip to 10 seconds in the current song
         mPlayer.seekToPosition(10000);
     }
-//
-//    public void onLowBitrateButtonPressed(View view) {
-//        mPlayer.setPlaybackBitrate(PlaybackBitrate.BITRATE_LOW);
-//    }
-//
-//    public void onNormalBitrateButtonPressed(View view) {
-//        mPlayer.setPlaybackBitrate(PlaybackBitrate.BITRATE_NORMAL);
-//    }
-//
-//    public void onHighBitrateButtonPressed(View view) {
-//        mPlayer.setPlaybackBitrate(PlaybackBitrate.BITRATE_HIGH);
-//    }
+
+    public void onLowBitrateButtonPressed(View view) {
+        mPlayer.setPlaybackBitrate(PlaybackBitrate.BITRATE_LOW);
+    }
+
+    public void onNormalBitrateButtonPressed(View view) {
+        mPlayer.setPlaybackBitrate(PlaybackBitrate.BITRATE_NORMAL);
+    }
+
+    public void onHighBitrateButtonPressed(View view) {
+        mPlayer.setPlaybackBitrate(PlaybackBitrate.BITRATE_HIGH);
+    }
 
     //   ____      _ _ _                _      __  __      _   _               _
     //  / ___|__ _| | | |__   __ _  ___| | __ |  \/  | ___| |_| |__   ___   __| |___
@@ -545,8 +541,8 @@ public class MusicActivity extends Activity implements
         // and also will prevent your application from doing extra work in the background when
         // paused.
         if (mPlayer != null) {
-            mPlayer.removePlayerNotificationCallback(MusicActivity.this);
-            mPlayer.removeConnectionStateCallback(MusicActivity.this);
+            mPlayer.removePlayerNotificationCallback(DemoActivity.this);
+            mPlayer.removeConnectionStateCallback(DemoActivity.this);
         }
     }
 

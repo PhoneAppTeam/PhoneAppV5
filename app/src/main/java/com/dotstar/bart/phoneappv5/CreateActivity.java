@@ -25,9 +25,9 @@ public class CreateActivity extends MainActivity {
     }
 
     OnClickListener listen1 = new OnClickListener() {
-         public void onClick(View v){
+        public void onClick(View v){
             Intent intent = new Intent(CreateActivity.this, MusicActivity.class);
-             startActivity(intent);
+            startActivity(intent);
             finish();
         }
     };

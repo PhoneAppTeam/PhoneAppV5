@@ -5,11 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
+import android.view.View.OnClickListener;
 
 /**
  * Created by Bart on 4/1/2015.
  */
-public class ProfileActivity extends MainActivity implements View.OnClickListener{
+public class ProfileActivity extends MainActivity{
 
     Button custom, friends, stats, home;
 
@@ -19,41 +20,47 @@ public class ProfileActivity extends MainActivity implements View.OnClickListene
         setContentView(R.layout.activity_profile);
 
         home = (Button)findViewById(R.id.home_pageButton);
-        home.setOnClickListener(this);
+        home.setOnClickListener(listen1);
 
         custom = (Button)findViewById(R.id.customizeButton);
-        custom.setOnClickListener(this);
+        custom.setOnClickListener(listen2);
 
         friends = (Button)findViewById(R.id.friends_listButton);
-        friends.setOnClickListener(this);
+        friends.setOnClickListener(listen3);
 
         stats = (Button)findViewById(R.id.statsButton);
-        stats.setOnClickListener(this);
+        stats.setOnClickListener(listen4);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.home_pageButton: {
-                Intent intent = new Intent(this, MainActivity.class);
-                this.startActivity(intent);
-                finish();
-            }
-            case R.id.customizeButton: {
-                //Intent intent = new Intent(this, SettingsActivity.class);
-                //this.startActivity(intent);
-                finish();
-            }
-            case R.id.friends_listButton: {
-                //Intent intent = new Intent(this, CreateActivity.class);
-                //this.startActivity(intent);
-                finish();
-            }
-            case R.id.statsButton: {
-               // Intent intent = new Intent(this, JoinActivity.class);
-                //this.startActivity(intent);
-                finish();
-            }
+    OnClickListener listen1 = new OnClickListener() {
+        public void onClick(View v){
+            Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
-    }
+    };
+
+    OnClickListener listen2 = new OnClickListener() {
+        public void onClick(View v){
+            Intent intent = new Intent(ProfileActivity.this, CustomizeActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
+
+    OnClickListener listen3 = new OnClickListener() {
+        public void onClick(View v){
+            Intent intent = new Intent(ProfileActivity.this, FriendsActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
+
+    OnClickListener listen4 = new OnClickListener() {
+        public void onClick(View v){
+            Intent intent = new Intent(ProfileActivity.this, StatsActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    };
 }
