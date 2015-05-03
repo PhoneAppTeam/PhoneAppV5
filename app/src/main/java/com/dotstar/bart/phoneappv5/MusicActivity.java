@@ -1,10 +1,13 @@
 package com.dotstar.bart.phoneappv5;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,6 +20,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
@@ -43,6 +47,9 @@ import java.util.List;
 import java.util.Locale;
 import java.lang.String;
 
+/**
+ * Author: @Khoa Tran
+ */
 
 public class MusicActivity extends Activity implements
         PlayerNotificationCallback, ConnectionStateCallback {
@@ -188,17 +195,32 @@ public class MusicActivity extends Activity implements
         updateButtons();
         logStatus("Ready");
 
-        //homepage = (Button)findViewById(R.id.homepageButton);
-       // homepage.setOnClickListener(listen1);
+        homepage = (Button)findViewById(R.id.homepageButton);
+        homepage.setOnClickListener(listen1);
     }
-/**
+
     OnClickListener listen1 = new OnClickListener() {
         public void onClick(View v){
             Intent intent = new Intent(MusicActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
-    }; **/
+    };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+        return true;
+    }
 
     @Override
     protected void onResume() {
@@ -234,7 +256,6 @@ public class MusicActivity extends Activity implements
      * @return Connectivity state to be passed to the SDK
      * @see com.spotify.sdk.android.player.Player#setConnectivityStatus(com.spotify.sdk.android.player.Connectivity)
      */
-    //TODO(nik): ^-- is that actually true? I think so, but someone ought to look it up...
     private Connectivity getNetworkConnectivity(Context context) {
         ConnectivityManager connectivityManager;
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

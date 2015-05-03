@@ -31,4 +31,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.spotify.sdk:spotify-auth:1.0.0-beta9@aar'
     compile 'com.spotify.sdk:spotify-player:1.0.0-beta9@aar'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
 }
